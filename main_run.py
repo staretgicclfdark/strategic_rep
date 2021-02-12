@@ -327,6 +327,7 @@ def create_main_folders():
 
 
 if __name__ == '__main__':
+    create_main_folders()
     cost_factor = 5
     epsilon = 0.2
     spare_cost = 0
