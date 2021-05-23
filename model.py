@@ -7,46 +7,35 @@ class TrainModel(ABC):
     @abstractmethod
     def __call__(self, X):
         """
-
-        :param X: features to predict
-        :return: the prediction result
+        :param X: Vector features to predict
+        :return: The prediction result
         """
 
     @abstractmethod
     def fit(self, X, y):
         """
-
-        :param X: data to learn from
+        :param X: Data to learn from
         :param y: True values
         """
     @abstractmethod
     def predict(self, X):
         """
-
-        :param X: data to predict
-        :return: the new model prediction
+        :param X: Data to predict
+        :return: The new model prediction
         """
-
-class RandomModel(TrainModel):
-    def __init__(self):
-        self.coef = np.random.normal(size=6)
-        self.intercept = np.random.normal(size=1)
-
-    def fit(self, X, y):
-        return
-
-    def predict(self, X):
-        return self(X)
-
-    def __call__(self, X):
-        def return_single_prediction(single_float_score):
-            return 1 if single_float_score >= 0 else -1
-
-        return np.vectorize(return_single_prediction)(X @ self.coef + self.intercept)
 
 
 class HardtAlgo(TrainModel):
+
+    '''
+    The Hardt model is implemented as it was described in paper Strategic Classification (Hardt et al)
+    '''
+
     def __init__(self, separable_cost: SeparableCost):
+        '''
+
+        :param separable_cost: The cost separable function.
+        '''
         self.min_si = None
         self.separable_cost = separable_cost
         self.coef_ = (separable_cost.a, None)
@@ -57,7 +46,7 @@ class HardtAlgo(TrainModel):
             return 1 if self.separable_cost.apply_cost2(x) >= self.min_si else -1
 
         if self.min_si is None:
-            print("model hasn't trained yet. please train first")
+            print("The model hasn't trained yet. please train first")
             return
 
         if isinstance(X, np.ndarray):
@@ -71,6 +60,7 @@ class HardtAlgo(TrainModel):
     def fit(self, X: pd.DataFrame, y):
         def apply_cost_with_thresh(x):
             return 1 if self.separable_cost.apply_cost1(x) >= thresh else -1
+        print("training hardt model it might take a while..")
         min_err_si = np.inf
         S = X.apply(self.separable_cost.apply_cost2, axis=1) + 2
 
@@ -82,7 +72,6 @@ class HardtAlgo(TrainModel):
                     min_err_si = err_si
                     self.min_si = s_i
                 t.update(1)
-            print(f'min_err_si: {min_err_si}')
             self.intercept_ = -self.min_si / self.separable_cost.cost_factor
 
 
