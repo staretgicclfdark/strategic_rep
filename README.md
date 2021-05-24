@@ -2,8 +2,11 @@
 installation:
 Create new environment and use the requirements.txt file to install all packages.
 You can use the follows line:
+  
   conda create -n strategic_dark python=3.9
+  
   conda activate strategic_dark
+  
   pip install -r requirements.txt
 
 This is the code for the paper Strategic Classification in the Dark.
