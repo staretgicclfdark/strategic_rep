@@ -2,9 +2,8 @@ from utills_and_consts import *
 from loan_status_model_trainer import get_svm_loan_return_model
 from cost_functions import MixWeightedLinearSumSquareCostFunction
 from strategic_players import strategic_modify_using_known_clf
-# todo: maybe this function also should be here. maybe we should not have file for strategic just file for experment.
 from strategic_players import visualize_projected_changed_df
-from strategic_players import get_hardt_model #todo: this file will move to diffrent file.
+from strategic_players import get_hardt_model
 
 
 def print_evaluation_on_modify_test(modify_test: pd.DataFrame, clf, feature_list_to_use: list, clf_name: str):
@@ -37,7 +36,6 @@ def create_strategic_data_sets_using_known_clf(dir_name_for_saving_visualization
     :param features_to_use: list of features to use for predictions
     :return: Strategic modify dataset of the test set according to classifier f.
     '''
-    # todo: get flag if we should show the projected visualiztion.
     real_test_f_star_loan_status = pd.read_csv(real_test_f_star_loan_status_path)
     f_weights, f_inter = f.coef_[0], f.intercept_
 

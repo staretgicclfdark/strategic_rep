@@ -79,8 +79,7 @@ def get_svm_loan_return_model(model_loan_returned_path: str, features_to_use: li
         f = load_model(model_loan_returned_path)
         real_test_f_star_loan_status = get_real_f_star_loan_status_real_df(force_create=False, orig_df_path=real_test_path,
                                                                            orig_df_f_star_loan_status=real_test_f_star_loan_status_path)
-        # todo: what if real_test_f_star_loan_status_path is not exist??
-        # real_test_f_star_loan_status = pd.read_csv(real_test_f_star_loan_status_path)
+
         err_on_not_modify = evaluate_model_on_test_set(real_test_f_star_loan_status, f, features_to_use)
         print(f'err on not modify real test:{err_on_not_modify}')
     return f

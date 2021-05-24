@@ -53,7 +53,7 @@ def strategic_modify_using_known_clf(orig_df: pd.DataFrame, f, feature_list: lis
                 z = cost_func.maximize_features_against_binary_model(x, f)
                 modify_data.loc[index] = z if len(z) > 1 else z[0]
             else:
-                modify_data.loc[index] = x if len(x) > 1 else x[0]  # todo: chek if there is problem
+                modify_data.loc[index] = x if len(x) > 1 else x[0]
             t.update(1)
     # insert other features that are not used for prediction but yet important:
     for col_name in filter(lambda c: c not in modify_data.columns, orig_df.columns):

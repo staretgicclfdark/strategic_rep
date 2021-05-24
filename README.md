@@ -1,4 +1,11 @@
 # strategic_rep
+installation:
+Create new environment and use the requirements.txt file to install all packages.
+You can use the follows line:
+  conda create -n strategic_dark python=3.9
+  conda activate strategic_dark
+  pip install -r requirements.txt
+
 This is the code for the paper Strategic Classification in the Dark.
 There are three main experiment in the paper and you can run them:
 1) full information experiment. That mean constants know the classifier. In this experiment you can see the

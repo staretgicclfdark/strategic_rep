@@ -108,7 +108,7 @@ def m_exp():
     a_tag = np.array([1])
     epsilon = 0.0000001
     cost_factor = 1
-    test_size = 1000
+    test_size = 100
     train_size = 4000
     num_splits = 10
     repeat_on_same_model_exp = 200
@@ -128,7 +128,7 @@ def m_exp():
             print(f' m: {m} split number: {i}')
             f_model, test_set = f_models_list[i], test_data_sets_list[i]
             err_f_on_x_f = err_f_on_x_f_list[i]
-            # todo: f_hat trained more that one 10..
+
             for _ in range(repeat_on_same_model_exp):
                 friends_set, friends_hardt_labels = create_firends_data_set(m, f_model, ['f0'])
                 f_hat = LinearSVC(C=1000, random_state=42, max_iter=100000)

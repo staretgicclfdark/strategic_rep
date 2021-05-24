@@ -60,7 +60,7 @@ def load_model(path: str):
 def save_model(model, model_path):
     pickle.dump(model, open(model_path, 'wb'))
 
-#todo: the name real should be change! and I recommend to change the pre2009 names..
+
 real_train_path = 'data/train_pre2009.csv'
 real_val_path = 'data/val_pre2009.csv'
 real_test_path = 'data/test_pre2009.csv'
