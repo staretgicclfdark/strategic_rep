@@ -24,7 +24,7 @@ different between Hardt model (the model that describes in Strategic Classificat
 can see how the number of sample constant learn from influence Hardt model and svm model results.
 **Note: for running this experiment you should run first experiment number 1**
 at the end of this experiment you can find the output files at:
- result/dark_exp/cost_factor=_{what u defined}_epsilon={epsilon}
+ result/dark_exp/cost_factor=_{what you defined}_epsilon={epsilon}
  In this folder you can find
 
 **Running the experiment:**
