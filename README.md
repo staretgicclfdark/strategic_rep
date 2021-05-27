@@ -18,7 +18,7 @@ different between Hardt model (the model that describes in Strategic Classificat
 
 **Running the experiment:**
 
-    --full_info_exp
+    python strategic_main_run.py --full_info_exp
 
 2) Movement in the dark experiment. That mean constants doesn't know the classifier. In this experiment you 
 can see how the number of sample constant learn from influence Hardt model and svm model results.
@@ -29,13 +29,13 @@ at the end of this experiment you can find the output files at:
 
 **Running the experiment:**
 
-    --dark_exp
+    python strategic_main_run.py --dark_exp
 
 3) Run synthetic experiment in one dimension. Sample points from gaussian distribution.
  
  **Running the experiment:**
  
-    --synthetic_exp
+    python strategic_main_run.py --synthetic_exp
 
 #### **flags for the two first experiment:**
  -c this is the cost_factor default value is 5
@@ -47,6 +47,6 @@ at the end of this experiment you can find the output files at:
  
   example:
 
-     strategic_main_run.py --full_info_exp -c 5 -e 0.2
+     python strategic_main_run.py --full_info_exp -c 5 -e 0.2
  
  **For the third experiment there are no flags.**
