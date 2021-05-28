@@ -99,21 +99,25 @@ def get_trained_hardt_models(train_size: int, exp_path: str, num_to_train: int, 
     return hardt_models_to_return
 
 
-def m_exp():
+def run_synthetic_hardt_exp(m_list, num_splits, repeat_on_same_model_exp, train_size, test_size, force_to_create):
     np.random.seed(42)
     base_folder = safe_create_folder(result_folder_path, 'oneD_synthetic_hardt_exp')
     m_exp_path = safe_create_folder(base_folder, 'm_exp')
-    m_list = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
 
+
+    # m_list = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
     a_tag = np.array([1])
     epsilon = 0.0000001
     cost_factor = 1
-    test_size = 100
-    train_size = 4000
-    num_splits = 10
-    repeat_on_same_model_exp = 200
-
-    f_models_list = get_trained_hardt_models(train_size, m_exp_path, num_splits, a_tag, cost_factor, force_to_create=False)
+    # test_size = 100
+    # train_size = 4000
+    # num_splits = 10
+    # repeat_on_same_model_exp = 200
+    if train_size == -1:
+        train_size = 4000
+    if test_size == -1:
+        test_size = 100
+    f_models_list = get_trained_hardt_models(train_size, m_exp_path, num_splits, a_tag, cost_factor, force_to_create=force_to_create)
     test_data_sets_list = get_test_data_sets(test_size, num_splits)
     tests_full_info_changed = change_test_datasets_f_info(f_models_list, test_data_sets_list, ['f0'], epsilon, cost_factor, a_tag)
     err_f_on_x_f_list = [evaluate_model_on_test_set(test, f, ['f0']) for (f, test) in zip(f_models_list, tests_full_info_changed)]

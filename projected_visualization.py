@@ -104,11 +104,12 @@ def plot_dot_and_arrows(projected_df_before: pd.DataFrame, projected_df_after: p
         if i > num_point_to_plot:
             break
 
+
 def visualize_projected_changed_df(clf_name: str, before_change_df: pd.DataFrame, after_change_df: pd.DataFrame,
                                    features_to_project: list, title: str, f_weights, f_inter,
                                    label: str = 'LoanStatus', num_point_to_plot: int = 100,
                                    dir_for_projection_images: str = '2D_projection_images', to_save: bool = True,
-                                   dir_name_for_saving_visualize: str = None, clf=None):
+                                   dir_name_for_saving_visualize: str = None, clf=None, show_flag=True):
     '''
 
     :param clf_name: Name of the classifier to project according to it.
@@ -123,6 +124,7 @@ def visualize_projected_changed_df(clf_name: str, before_change_df: pd.DataFrame
     :param dir_for_projection_images:
     :param to_save: Whatever to save the plot.
     :param dir_name_for_saving_visualize: The name of directory to save the plot.
+    :param show_flag: If it 1 the visualization is plotted.
     '''
 
 
@@ -155,4 +157,6 @@ def visualize_projected_changed_df(clf_name: str, before_change_df: pd.DataFrame
         os.makedirs(dir_for_projection_images, exist_ok=True)
         # plt.rcParams['figure.figsize'] = figsize_movements_plot
         plt.savefig(saving_path, format='png', dpi=300)
-    plt.show()
+    if show_flag:
+        plt.show()
+    plt.close()

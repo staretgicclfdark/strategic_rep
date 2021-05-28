@@ -61,6 +61,13 @@ def save_model(model, model_path):
     pickle.dump(model, open(model_path, 'wb'))
 
 
+def get_data_with_right_size(data_path: str, data_size: int):
+    data_df = pd.read_csv(data_path)
+    if data_size > 0:
+        data_df = data_df[:min(data_size, len(data_df))]
+    return data_df
+
+
 real_train_path = 'data/train_pre2009.csv'
 real_val_path = 'data/val_pre2009.csv'
 real_test_path = 'data/test_pre2009.csv'

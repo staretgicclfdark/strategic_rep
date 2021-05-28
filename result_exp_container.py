@@ -82,9 +82,9 @@ class ResultExpContainer:
         var_err_f_fhat_svm_list = self.dict_result['var err f_hat svm']
         var_err_f_fhat_hardt_list = self.dict_result['var err f_hat hardt']
         y_data_list = self.get_err_list_for_pop_graph(test_f_star)
-        graph_label_list = ['SVM(in the dark)', 'HARDT(in the dark)', 'SVM(fully-informed)',
-                            'HARDT(fully-informed)', 'SVM(non-strategic)', 'HARDT(non-strategic)']
-        saving_str = ''
+        graph_label_list = ['SVM(in the dark)', 'HMPW(in the dark)', 'SVM(fully-informed)',
+                            'HMPW(fully-informed)', 'SVM(non-strategic)', 'HMPW(non-strategic)']
+        safety_str = ''
         if spare_cost != 0:
             safety_str = f' (safety={spare_cost})'
         title = 'POP in Prosper.com loans data' + safety_str
@@ -153,8 +153,8 @@ class ResultExpContainer:
             percent_f_on_delta_fhat_minus_1_list.append(100 * num_f_on_delta_fhat_minus_1 / len(y_1_and_f_delta_f_1))
         return percent_f_on_delta_fhat_minus_1_list
 
-    def plot_social_inequality_graph(self, modified_data_folder: str, spare_cost: float):
-        test_changed_on_hardt = pd.read_csv(hardt_modify_full_information_real_test_path)
+    def plot_social_inequality_graph(self, modified_data_folder: str, spare_cost: float, test_size: int):
+        test_changed_on_hardt = pd.read_csv(hardt_modify_full_information_real_test_path)[:test_size]
         y_1_data_sets = test_changed_on_hardt[test_changed_on_hardt['LoanStatus'] == 1]
         y_1_and_f_delta_f_1 = y_1_data_sets[self.hardt_f.predict(y_1_data_sets[self.feature_list_to_use]) == 1]
 

@@ -8,11 +8,11 @@ from projected_visualization import visualize_projected_changed_df
 
 
 def get_hardt_model(cost_factor, train_path, force_train_hardt=False,
-                    feature_list_to_use=six_most_significant_features):
+                    feature_list_to_use=six_most_significant_features, train_size=-1):
     hardt_model_path = os.path.join(models_folder_path, f'Hardt_cost_factor={cost_factor}')
     if force_train_hardt or os.path.exists(hardt_model_path) is False:
         print(f'training Hardt model')
-        train_df = pd.read_csv(train_path)
+        train_df = get_data_with_right_size(train_path, train_size)
         hardt_algo = HardtAlgo(WeightedLinearCostFunction(a[:len(feature_list_to_use)], cost_factor))
 
         hardt_algo.fit(train_df[feature_list_to_use], train_df['LoanStatus'])
@@ -72,10 +72,11 @@ def init_data_to_return_dict():
 
 
 def update_dicts_for_f_hat_result(f_hat_data_dict, data_to_return, member_key, orig_df, f_hat, feature_to_learn_list, orig_df_f_loan_status,
-                                  models_f_hat_path, f_vec, did_changed, prediction_f_hat_on_x):
+                                  models_f_hat_path, f_vec, did_changed, prediction_f_hat_on_x, save_flag):
     f_hat_data_dict[member_key] = dict()
     saving_model_path = os.path.join(models_f_hat_path, f'f_hat_{member_key}.sav')
-    save_model(f_hat, saving_model_path)
+    if save_flag:
+        save_model(f_hat, saving_model_path)
     f_hat_data_dict[member_key]['saving model path'] = saving_model_path
     f_hat_data_dict[member_key]['err'] = evaluate_model_on_test_set(orig_df, f_hat, feature_to_learn_list, orig_df_f_loan_status)
     data_to_return['err_list'].append(f_hat_data_dict[member_key]['err'])
@@ -90,7 +91,7 @@ def update_dicts_for_f_hat_result(f_hat_data_dict, data_to_return, member_key, o
         data_to_return['number_moved'] += 1
 
 
-def finish_data_dicts_updates(data_to_return, f_hat_data_dict, f_hat_data_json_path, data_to_return_path):
+def finish_data_dicts_updates(data_to_return, f_hat_data_dict, f_hat_data_json_path, data_to_return_path, save_flag):
     def add_mean_and_var_for_key(base_key_name: str):
         key_list_name = base_key_name + '_list'
         mean = sum(data_to_return[key_list_name]) / len(data_to_return[key_list_name])
@@ -100,21 +101,26 @@ def finish_data_dicts_updates(data_to_return, f_hat_data_dict, f_hat_data_json_p
 
     for key in ['err', 'l2_norm', 'angle_f_hat_f']:
         add_mean_and_var_for_key(key)
-    with open(f_hat_data_json_path, 'w+') as json_file:
-        json.dump(f_hat_data_dict, json_file, indent=4)
-    with open(data_to_return_path, 'w+') as json_file:
-        json.dump(data_to_return, json_file, indent=4)
+    if save_flag:
+        with open(f_hat_data_json_path, 'w+') as json_file:
+            json.dump(f_hat_data_dict, json_file, indent=4)
+        with open(data_to_return_path, 'w+') as json_file:
+            json.dump(data_to_return, json_file, indent=4)
 
 
-def get_paths_for_running(dir_name_for_result, num_friends):
-    models_f_hat_path = safe_create_folder(safe_create_folder(dir_name_for_result, 'f_hat_models'),
-                                           f'{num_friends} friends')
+def get_paths_for_running(dir_name_for_result, num_friends, save_flag):
     data_modified_path = os.path.join(safe_create_folder(dir_name_for_result, 'modified_data'),
                                       f'modified_test_{num_friends}.csv')
-    f_hat_data_json_path = os.path.join(safe_create_folder(dir_name_for_result, 'f_hat_result'),
-                                        f'f_hat_results_{num_friends}.json')
-    data_to_return_path = os.path.join(safe_create_folder(dir_name_for_result, 'run_summary_result'),
-                                        f'fsummary_results_{num_friends}_friends.json')
+    models_f_hat_path = dir_name_for_result
+    if save_flag:
+        models_f_hat_path = safe_create_folder(safe_create_folder(dir_name_for_result, 'f_hat_models'),
+                                               f'{num_friends} friends')
+        f_hat_data_json_path = os.path.join(safe_create_folder(dir_name_for_result, 'f_hat_result'),
+                                            f'f_hat_results_{num_friends}.json')
+        data_to_return_path = os.path.join(safe_create_folder(dir_name_for_result, 'run_summary_result'),
+                                           f'fsummary_results_{num_friends}_friends.json')
+    else:
+        f_hat_data_json_path, data_to_return_path = None, None
     return models_f_hat_path, data_modified_path, f_hat_data_json_path, data_to_return_path
 
 
@@ -168,7 +174,8 @@ def write_modify_data_with_all_columns(modify_data, orig_df, data_modified_path)
 
 def strategic_modify_learn_from_friends(clf_name, orig_df: pd.DataFrame, sample_friends_from_df: pd.DataFrame, clf ,
                                         feature_to_learn_list, cost_func: CostFunction, member_dict: dict, f_vec, dir_name_for_result: str = None,
-                                        title_for_visualization: str = None, visualization=True, num_friends=0):
+                                        title_for_visualization: str = None, visualization=True, num_friends=0,
+                                        show_flag=True, save_flag=True):
     '''
 
     :param clf_name: The Name of the classifier
@@ -183,6 +190,8 @@ def strategic_modify_learn_from_friends(clf_name, orig_df: pd.DataFrame, sample_
     :param title_for_visualization: Title of the player movement.
     :param visualization: Whatever we plot the visualization
     :param num_friends: Number of friends player learn from
+    :param show_flag: If it 1 the visualization is plotted.
+    :param save_flag: If it 1 Extra data about the experiment is saved
     :return:
     modify_data: Data after player moved
     data_to_return: data represents some statistic to display in graph (we don't display all statistic in graphs).
@@ -191,10 +200,8 @@ def strategic_modify_learn_from_friends(clf_name, orig_df: pd.DataFrame, sample_
     orig_df_f_loan_status = clf.predict(orig_df[feature_to_learn_list])
     sample_friends_f_loan_status = clf.predict(sample_friends_from_df[feature_to_learn_list])
     modify_data = orig_df[feature_to_learn_list].copy()
-    should_save = False
     if dir_name_for_result is not None:
-        should_save = True
-        models_f_hat_path, data_modified_path, f_hat_data_json_path, data_to_return_path = get_paths_for_running(dir_name_for_result, num_friends)
+        models_f_hat_path, data_modified_path, f_hat_data_json_path, data_to_return_path = get_paths_for_running(dir_name_for_result, num_friends, save_flag)
     f_hat_data_dict = dict()
     data_to_return = init_data_to_return_dict()
     with tqdm(total=len(orig_df)) as t:
@@ -211,16 +218,16 @@ def strategic_modify_learn_from_friends(clf_name, orig_df: pd.DataFrame, sample_
                 prediction_f_hat_on_x = f_hat.predict(x.reshape(1, -1))[0]
                 if prediction_f_hat_on_x == -1:
                     did_changed = get_player_movements_and_update_modify_data_df(cost_func, modify_data, index, f_hat, x)
-            if should_save and f_hat is not None:
+            if f_hat is not None:
                 update_dicts_for_f_hat_result(f_hat_data_dict, data_to_return, member_key, orig_df, f_hat,
                                               feature_to_learn_list, orig_df_f_loan_status,
-                                              models_f_hat_path, f_vec, did_changed, prediction_f_hat_on_x.item())
+                                              models_f_hat_path, f_vec, did_changed, prediction_f_hat_on_x.item(), save_flag)
             t.update(1)
-    if should_save:
-        finish_data_dicts_updates(data_to_return, f_hat_data_dict, f_hat_data_json_path, data_to_return_path)
-        write_modify_data_with_all_columns(modify_data, orig_df, data_modified_path)
+    finish_data_dicts_updates(data_to_return, f_hat_data_dict, f_hat_data_json_path, data_to_return_path, save_flag)
+
+    write_modify_data_with_all_columns(modify_data, orig_df, data_modified_path)
     if visualization:
         visualize_projected_changed_df(clf_name, orig_df, modify_data, feature_to_learn_list, title_for_visualization,
                                        dir_name_for_saving_visualize=dir_name_for_result, f_weights=f_vec[:-1],
-                                       f_inter=f_vec[-1], clf=clf)
+                                       f_inter=f_vec[-1], clf=clf, show_flag=show_flag)
     return modify_data, data_to_return
