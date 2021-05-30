@@ -13,6 +13,7 @@ You can use the following line:
       pip install -r requirements.txt
 
 There are three main experiment in the paper and you can run them:
+
 **1) full information experiment**. That means Contestants know the classifier. In this experiment you can see the
 different between Hardt's model (the model that describes in Strategic Classification) and the linear svm model.
 
