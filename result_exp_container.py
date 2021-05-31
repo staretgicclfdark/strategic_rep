@@ -40,7 +40,7 @@ class ResultExpContainer:
 
         hardt_err = evaluate_model_on_test_set(friends_modify_on_hardt_strategic_data, self.hardt_f, self.feature_list_to_use)
 
-        print(f' hardt err: {hardt_err}')
+        print(f'hardt err: {hardt_err}')
         self.dict_result['hardt_friends_err_list'].append(hardt_err)
 
     def get_err_list_for_pop_graph(self, test_f_star: pd.DataFrame):

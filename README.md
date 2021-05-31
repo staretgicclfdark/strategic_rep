@@ -23,7 +23,6 @@ Running the experiment:
 
 **2) Movements in the dark experiment.** That means Contestants don't know the classifier. In this experiment you 
 can see how the number of sample Contestant learns from, influences Hardt's model and svm model results.
-**Note: for running this experiment you should run first experiment number 1**
 at the end of this experiment you can find the output files at:
  result/dark_exp/cost_factor=_{what you defined}_epsilon={epsilon}
  In this folder you can find:
@@ -71,8 +70,8 @@ Running the experiment:
       
       --save: Saves some information about Contestant trained models. The data of this experiment is saved in:
                                        result/dark_exp/cost_factor={cost_factor}_epsilon={epsilon}. Please note that it might take a lot of storage but
-                                       some of the data might speed up the next dark experiment. Also note that if you change epsilon or cost
-                                       factor you must delete two folders. One is svm_result/f_hat_result folder and the other is hardt_results/f_hat_result_folder.
+                                       some of the data might speed up the next dark experiment.
+                                       One is svm_result/f_hat_result folder and the other is hardt_results/f_hat_result_folder.
                     
       
  

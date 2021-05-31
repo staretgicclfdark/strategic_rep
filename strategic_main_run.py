@@ -55,7 +55,7 @@ if __name__ == '__main__':
         m_list = [int(m) for m in args.list]
     if args.full_info_exp:
         run_strategic_full_info(train_hardt=args.th, cost_factor=args.c, epsilon=args.e, use_cv=args.cv,
-                                train_size=args.trs, test_size=args.tes, show_flag=args.mp)
+                                train_size=args.trs, test_size=args.tes, show_flag=args.mp, force_train_loan_model=args.ts)
     elif args.dark_exp:
         st = StrategicRandomFriendsRunner(m_list, args.c, args.e, six_most_significant_features,
                                           force_train_hadart=args.th, force_train_svm_loan_model=args.ts,
