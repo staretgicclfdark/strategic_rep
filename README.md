@@ -23,7 +23,8 @@ Running the experiment:
 
 **2) Movements in the dark experiment.** That means Contestants don't know the classifier. In this experiment you 
 can see how the number of sample Contestant learns from, influences Hardt's model and svm model results.
-at the end of this experiment you can find the output files at:
+**Note: for running this experiment you should run first experiment number 1 with the same e and c parameters**
+At the end of this experiment you can find the output files at:
  result/dark_exp/cost_factor=_{what you defined}_epsilon={epsilon}
  In this folder you can find:
  Graphs with models errors
