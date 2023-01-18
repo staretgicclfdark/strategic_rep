@@ -20,7 +20,7 @@ different between Hardt's model (the model that describes in Strategic Classific
 Running the experiment:
 
     python strategic_main_run.py --full_info_exp
-<img alt="full" src="./images/Hardt_full.png" width="800" height="300"/>
+<img alt="full" src="./images/Hardt_full.png" width="500" height="300"/>
 **2) Movements in the dark experiment.** That means Contestants don't know the classifier. In this experiment you 
 can see how the number of sample Contestant learns from, influences Hardt's model and svm model results.
 **Note: for running this experiment you should run first experiment number 1 with the same e and c parameters**
@@ -34,14 +34,13 @@ At the end of this experiment you can find the output files at:
 Running the experiment:
 
     python strategic_main_run.py --dark_exp
-<img alt="prosper" src="./images/prosper.png" width="800" height="300"/>
-<img alt="dark" src="./images/dark_128.png" width="800" height="300"/>
+<img alt="prosper" src="./images/prosper.png" width="550" height="300"/>
 **3) Run synthetic experiment in one dimension. Points are sampled from Gaussian Distribution.**
  
  Running the experiment:
  
     python strategic_main_run.py --synthetic_exp
-<img alt="G" src="./images/1d.png" width="800" height="300"/>
+<img alt="G" src="./images/1d.png" width="600" height="300"/>
 #### **Flags::**
      -c: This is the scale of the cost Contestant pays for movement. Default value is 5. Only relevant in the full information and dark experiments.
       
