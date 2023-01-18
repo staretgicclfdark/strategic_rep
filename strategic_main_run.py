@@ -47,7 +47,6 @@ def create_args_parser():
 
 
 if __name__ == '__main__':
-    # todo! the friends dict!! migh break!
     create_main_folders()
     m_list = [4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]
     args = create_args_parser()

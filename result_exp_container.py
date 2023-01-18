@@ -123,18 +123,19 @@ class ResultExpContainer:
         hardt_full_info_err_list, hardt_err_random_sample_list = y_data_list[3], y_data_list[1]
         ax1.fill_between(self.m_list, hardt_full_info_err_list, hardt_err_random_sample_list, alpha=0.2,
                          color='lightgray', hatch="\\\\\\\\")
-        m_to_write_arrow = self.m_list[2]
-        ax1.arrow(m_to_write_arrow, hardt_full_info_err_list[2], 0,
-                  hardt_err_random_sample_list[2] - hardt_full_info_err_list[2],
-                  shape='full', color='black', length_includes_head=True,
-                  zorder=0, head_length=0.01, head_width=2)
-        ax1.arrow(m_to_write_arrow, hardt_err_random_sample_list[2], 0,
-                  hardt_full_info_err_list[2] - hardt_err_random_sample_list[2],
-                  shape='full', color='black', length_includes_head=True,
-                  zorder=0, head_length=0.01, head_width=2)
+        if len(self.m_list) > 2:
+            m_to_write_arrow = self.m_list[2]
+            ax1.arrow(m_to_write_arrow, hardt_full_info_err_list[2], 0,
+                      hardt_err_random_sample_list[2] - hardt_full_info_err_list[2],
+                      shape='full', color='black', length_includes_head=True,
+                      zorder=0, head_length=0.01, head_width=2)
+            ax1.arrow(m_to_write_arrow, hardt_err_random_sample_list[2], 0,
+                      hardt_full_info_err_list[2] - hardt_err_random_sample_list[2],
+                      shape='full', color='black', length_includes_head=True,
+                      zorder=0, head_length=0.01, head_width=2)
 
-        ax1.text(m_to_write_arrow - 10, (hardt_full_info_err_list[2] + hardt_err_random_sample_list[2]) / 2, r'POP',
-                 fontsize=15)
+            ax1.text(m_to_write_arrow - 10, (hardt_full_info_err_list[2] + hardt_err_random_sample_list[2]) / 2, r'POP',
+                     fontsize=15)
         plt.savefig(saving_path, dpi=300)
         plt.show()
 
